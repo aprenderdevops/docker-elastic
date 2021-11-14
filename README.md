@@ -32,7 +32,7 @@ Acceder con un navegador a http://localhost:9200 para verificar que Elasticsearc
 
 ## Configuración del pipeline de Logstash
 
-A continuación, se muestra la configuración del pipeline de Logstash definida en [logstash/pipeline/logstash.conf](https://github.com/jarfernandez/docker-elastic/blob/main/logstash/pipeline/logstash.conf):
+A continuación, se muestra el fichero [logstash/pipeline/logstash.conf](https://github.com/aprenderdevops/docker-elastic/blob/main/logstash/pipeline/logstash.conf), que contiene la configuración del pipeline de Logstash:
 
 ```
 input {
@@ -58,16 +58,16 @@ output {
 
 Con esta configuración se genera cada 5 segundos un evento mediante el [plugin heartbeat](https://www.elastic.co/guide/en/logstash/current/plugins-inputs-heartbeat.html).
 
-No se ha incluido ningún [filter](https://www.elastic.co/guide/en/logstash/current/filter-plugins.html), por lo que con los eventos generados no se va a realizar ningún tipo de procesamiento o transformación.
+No se ha incluido ningún [filter](https://www.elastic.co/guide/en/logstash/current/filter-plugins.html), por lo que, con los eventos generados no se va a realizar ningún tipo de procesamiento o transformación.
 
-En la sección output se configura la salida de los eventos para su envío a Elasticsearch, al índice heartbeat, cuando estos hayan sido generados por el plugin heartbeat, y también se envían todos los eventos por la salida estándar mediante el [plugin stdout](https://www.elastic.co/guide/en/logstash/current/plugins-outputs-stdout.html) utilizando el formato definido por el [códec rubydebug](https://www.elastic.co/guide/en/logstash/current/plugins-codecs-rubydebug.html).
+En la sección output se configura la salida de los eventos para su envío al índice heartbeat de Elasticsearch cuando estos hayan sido generados por el plugin heartbeat. También se envían todos los eventos por la salida estándar mediante el [plugin stdout](https://www.elastic.co/guide/en/logstash/current/plugins-outputs-stdout.html) utilizando el formato definido por el [códec rubydebug](https://www.elastic.co/guide/en/logstash/current/plugins-codecs-rubydebug.html).
 
 ## Comprobar el funcionamiento del pipeline de Logstash
 
-Para comprobar que los eventos de tipo heartbeat se están generando cada 5 segundos y que se están enviando a la salida estándar se puede ejecutar el siguiente comando:
+Para comprobar que los eventos de tipo heartbeat se están generando cada 5 segundos y se están enviando a la salida estándar, se puede ejecutar el siguiente comando:
 
 ```bash
-$ docker logs logstash -n21
+$ docker logs logstash -n21 -f
 {
           "host" => "18ff4068ddbb",
       "@version" => "1",
@@ -93,7 +93,7 @@ $ docker logs logstash -n21
 
 La salida de este comando deberá mostrar cada 5 segundos un nuevo evento de tipo heartbeat.
 
-Para comprobar que los eventos también se están enviado a Elasticsearch se puede ejecutar el siguiente comando:
+Para comprobar que los eventos también se están enviado a Elasticsearch, se puede ejecutar el siguiente comando:
 
 ```bash
 $ curl -XGET "http://localhost:9200/heartbeat/_search?pretty=true" -H 'Content-Type: application/json' -d'{"size": 1}'
